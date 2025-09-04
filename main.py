@@ -9,9 +9,10 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Shooter")
 
-player = Soldier(200, 200, 3, 6)
-
 clock = pygame.time.Clock()
+
+player = Soldier('player', 200, 200, 3, 6)
+enemy = Soldier('enemy', 400, 200, 3, 6)
 
 def main():
     moving_left = False
@@ -23,6 +24,8 @@ def main():
         clock.tick(FPS)
 
         draw_bg(screen)
+
+        enemy.draw(screen)
 
         player.draw(screen)
         player.update(moving_left, moving_right)
