@@ -1,4 +1,5 @@
 import pygame
+import asyncio
 
 from settings import *
 from world import *
@@ -17,7 +18,7 @@ enemy = Soldier('enemy', 400, 200, 3, 6, 0)
 bullet_img = pygame.image.load('img/icons/bullet.png').convert_alpha()
 bullet_group = pygame.sprite.Group()
 
-def main():
+async def main():
     moving_left = False
     moving_right = False
 
@@ -63,8 +64,7 @@ def main():
                     player.shoot = False
 
         pygame.display.update()
+        await asyncio.sleep(0)
 
-    pygame.quit()
 
-if __name__ == "__main__":
-    main()
+asyncio.run(main())
