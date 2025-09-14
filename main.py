@@ -14,6 +14,9 @@ clock = pygame.time.Clock()
 player = Soldier('player', 200, 200, 3, 6, 11)
 enemy = Soldier('enemy', 400, 200, 3, 6, 0)
 
+bullet_img = pygame.image.load('img/icons/bullet.png').convert_alpha()
+bullet_group = pygame.sprite.Group()
+
 def main():
     moving_left = False
     moving_right = False
@@ -28,7 +31,11 @@ def main():
         enemy.draw(screen)
 
         player.draw(screen)
-        player.update(moving_left, moving_right)
+        player.update(moving_left, moving_right, screen, bullet_img, bullet_group)
+
+        # Update and draw groups
+        bullet_group.update()
+        bullet_group.draw(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -40,8 +47,10 @@ def main():
                     moving_left = True
                 if event.key == pygame.K_d:
                     moving_right = True
-                if event.key == pygame.K_SPACE and player.alive:
+                if event.key == pygame.K_SPACE:
                     player.jump = True
+                if event.key == pygame.K_w:
+                    player.shoot = True
                 if event.key == pygame.K_ESCAPE:
                     run = False
             # Keyboard releases
@@ -50,6 +59,8 @@ def main():
                     moving_left = False
                 if event.key == pygame.K_d:
                     moving_right = False
+                if event.key == pygame.K_w:
+                    player.shoot = False
 
         pygame.display.update()
 

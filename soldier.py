@@ -2,6 +2,7 @@ import pygame
 import os
 
 from settings import *
+from bullet import Bullet
 
 class Soldier(pygame.sprite.Sprite):
     def __init__(self, char_type, x, y, scale, speed, jump_force):
@@ -24,6 +25,8 @@ class Soldier(pygame.sprite.Sprite):
         self.direction = 1
         self.flip = False
         self.jump = False
+
+        self.shoot = False
 
         # Animations
         animation_types = ['Idle', 'Run', 'Jump']
@@ -64,7 +67,7 @@ class Soldier(pygame.sprite.Sprite):
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
 
-    def update(self, moving_left, moving_right):
+    def update(self, moving_left, moving_right, screen, bullet_img, bullet_group):
         # Reset movement variables
         dx = 0
         dy = 0
@@ -87,6 +90,9 @@ class Soldier(pygame.sprite.Sprite):
         
         # Check if player is moving and update action
         if self.alive:
+            if self.shoot:
+                bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * self.direction), self.rect.centery, self.direction, bullet_img)
+                bullet_group.add(bullet)
             if self.in_air:
                 self.update_action(2) # 2: Jump
             elif moving_left or moving_right:
